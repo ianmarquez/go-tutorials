@@ -6,36 +6,36 @@ import (
 )
 
 type CoinBalanceParams struct {
-  Username string
+	Username string
 }
 
 type CoinBalanceResponse struct {
-  Code int
-  Balance int64
+	Code    int
+	Balance int64
 }
 
 type Error struct {
-  Code int
-  Message string
+	Code    int
+	Message string
 }
 
 func writeError(w http.ResponseWriter, message string, code int) {
-  resp := Error{
-    Code: code,
-    Message: message,
-  }
+	resp := Error{
+		Code:    code,
+		Message: message,
+	}
 
-  w.Header().Set("Content-Type", "application/json")
-  w.WriteHeader(code)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
 
-  json.NewEncoder(w).Encode(resp)
+	json.NewEncoder(w).Encode(resp)
 }
 
 var (
-  RequestErrorHandler = func(w http.ResponseWriter, err error) {
-    writeError(w, err.Error(), http.StatusBadRequest)
-  }
-  InternalErrorHandler = func(w http.ResponseWriter) {
-    writeError(w, "Internal Server Error", http.StatusInternalServerError) 
-  }
+	RequestErrorHandler = func(w http.ResponseWriter, err error) {
+		writeError(w, err.Error(), http.StatusBadRequest)
+	}
+	InternalErrorHandler = func(w http.ResponseWriter) {
+		writeError(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 )
